@@ -5,7 +5,7 @@ from openai import OpenAI
 from utils.benchmark_generation import gen_benchmark
 from utils.test_llm_performance import test_llm_performance
 from utils.visualize import visualize
-from utils.needle_gen import needle_gen
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
