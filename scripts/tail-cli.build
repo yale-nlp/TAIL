@@ -3,15 +3,15 @@
 import argparse,os
 from openai import OpenAI  
 from tail_test.benchmark_generation import gen_benchmark
-from tail_test.test_llm_performance import test_llm_performance
-from tail_test.visualize import visualize
+# from tail_test.test_llm_performance import test_llm_performance
+# from tail_test.visualize import visualize
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     # args for benchmark generation
     parser.add_argument('--raw_document_path', type=str, help='path to the haystack')
-    parser.add_argument('--document_length', type=int, nargs='+', default=[8000, 40000], help='expect token lengths for your benchmark')
+    parser.add_argument('--document_length', type=int, nargs='+', default=[800], help='expect token lengths for your benchmark')
     parser.add_argument('--depth_list', type=int, nargs='+', default=[45], help='expext depths for your question')
     parser.add_argument('--QA_save_path', type=str, help='path to save the QA dataset')
     parser.add_argument('--gen_QA_model_name', type=str, default='gpt-4-turbo', help='model name for generating QA')

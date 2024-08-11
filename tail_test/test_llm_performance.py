@@ -104,4 +104,3 @@ def test_llm_performance(args,client,client2):
     
     with open(args.test_result_save_dir + f"result_{model_name}.json", 'w') as json_file:  
         json.dump(result, json_file)  
-

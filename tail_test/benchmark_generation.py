@@ -4,6 +4,23 @@ from openai import OpenAI
 import os
 import tiktoken
 from tqdm import tqdm
+  
+from nltk.tokenize import sent_tokenize 
+def combine_to_paragraphs(sentences, max_length=600):  
+    paragraphs = []  
+    current_paragraph = ""  
+      
+    for sentence in sentences:  
+        if len(current_paragraph) + len(sentence) <= max_length:  
+            current_paragraph += sentence 
+        else:  
+            current_paragraph += sentence 
+            paragraphs.append(current_paragraph)  
+            current_paragraph = ""
+      
+    if current_paragraph:  
+        paragraphs.append(current_paragraph)  
+    return paragraphs  
 
 def generate_QA(context, client, args, attempt=1, max_attempts=5):
     response = client.chat.completions.create(
@@ -31,14 +48,10 @@ def generate_QA(context, client, args, attempt=1, max_attempts=5):
     ans = []
 
     completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "user", "content": "I will give you a multiple choice question and a context. Please give your answer in a single character in A,B,C,D,E,F."},
-            {"role": "user", "content": f"{question} Options: {options_str}"},
-            {"role": "user", "content": "Please answer the above question referring to this document only: " + context}
-        ],
-        n=5
-    )
+        model="gpt-4o",
+        messages=[{"role": "user", "content": "I will give you a multiple choice question and a corresponding document. Please provide your chain of thoughts." + f"{question} Options: {options_str}"+"Please answer the above question refer to this document only: " + context},]  ,
+        n = 5,
+        )  
     answers = [choice.message.content for choice in completion.choices]
     for LLM_answer in answers:
         completion = client.chat.completions.create(
@@ -63,22 +76,14 @@ def generate_QA(context, client, args, attempt=1, max_attempts=5):
             return None  # or handle this case as needed
 
 def process_paragraphs(all_paragraphs_tokens, tokenizer, client, args, sublist_index):
-    # 递归检查是否超出索引范围
-    if sublist_index >= len(all_paragraphs_tokens):
-        print("All contexts have been processed.")
-        return
 
-    # 解码当前 sublist_index 对应的段落
     context = tokenizer.decode(all_paragraphs_tokens[sublist_index])
-
-    # 调用 generate_QA 函数，尝试生成 QA
     QA = generate_QA(context, client, args)
 
     if QA:
         return QA,context
-        # 可以在这里存储或进一步处理 QA
     else:
-        process_paragraphs(all_paragraphs_tokens, tokenizer, client, args, sublist_index + 1)
+        return process_paragraphs(all_paragraphs_tokens, tokenizer, client, args, sublist_index + 1)
 
 
 def find_sublist_index_by_position(nested_list, position):  
@@ -93,47 +98,50 @@ def find_sublist_index_by_position(nested_list, position):
 def gen_benchmark(args,client):
     with open(args.raw_document_path, 'r', encoding='utf-8') as file:  
         data_all = json.load(file) 
+
+    sentences = sent_tokenize(data_all[0]["text"])
+    paragraphs = combine_to_paragraphs(sentences)
+    
     doc_index = 0
     tokenizer = tiktoken.encoding_for_model(args.gen_QA_model_name)
 
     json_objects = [] 
-    for data in data_all[:1]:
-        all_paragraphs_tokens = []
-        all_paragraphs_chars = []
-        for context in data["text"]:
-            all_paragraphs_tokens.append(tokenizer.encode(context))
-            all_paragraphs_chars.append(context)
-        
-        total_tokens = sum([len(sublist) for sublist in all_paragraphs_tokens])
-        total_chars = sum([len(sublist) for sublist in all_paragraphs_chars])
-        # print(f"total chars: {int(total_chars/1000)}K")
-        print(f"Total tokens in raw document: {total_tokens}") 
-        if total_tokens < max(args.document_length):
-            raise ValueError("Total tokens in your raw document are less than the maximum document length specified! \nPlease input a longer document or decrease the maximum document length.")
-        for depth in tqdm(args.depth_list, desc="Generating QA for each depths"):
-            needle_point = int(total_tokens * (depth / 100))
-            sublist_index = find_sublist_index_by_position(all_paragraphs_tokens, needle_point)
-            QA,context = process_paragraphs(all_paragraphs_tokens, tokenizer, client, args, sublist_index)
-            for doc_len in args.document_length:
-                ratio = doc_len/total_tokens
-                new_doc_encode = all_paragraphs_tokens[int(sublist_index*(1-ratio)):int(sublist_index+ratio*(len(all_paragraphs_tokens)-sublist_index))]
-                new_doc = []
-                while sum([len(sublist) for sublist in new_doc_encode]) > doc_len:
-                    new_doc_encode = new_doc_encode[:-1]
-                # print(ratio,sum([len(sublist) for sublist in new_doc_encode]))
+    all_paragraphs_tokens = []
+    all_paragraphs_chars = []
+    for context in paragraphs:
+        all_paragraphs_tokens.append(tokenizer.encode(context))
+        all_paragraphs_chars.append(context)
+    
+    total_tokens = sum([len(sublist) for sublist in all_paragraphs_tokens])
+    total_chars = sum([len(sublist) for sublist in all_paragraphs_chars])
+    # print(f"total chars: {int(total_chars/1000)}K")
+    print(f"Total tokens in raw document: {total_tokens}") 
+    if total_tokens < max(args.document_length):
+        raise ValueError("Total tokens in your raw document are less than the maximum document length specified! \nPlease input a longer document or decrease the maximum document length.")
+    for depth in tqdm(args.depth_list, desc="Generating QA for each depths"):
+        needle_point = int(total_tokens * (depth / 100))
+        sublist_index = find_sublist_index_by_position(all_paragraphs_tokens, needle_point)
+        QA,context = process_paragraphs(all_paragraphs_tokens, tokenizer, client, args, sublist_index)
+        for doc_len in args.document_length:
+            ratio = doc_len/total_tokens
+            new_doc_encode = all_paragraphs_tokens[int(sublist_index*(1-ratio)):int(sublist_index+ratio*(len(all_paragraphs_tokens)-sublist_index))]
+            new_doc = []
+            while sum([len(sublist) for sublist in new_doc_encode]) > doc_len:
+                new_doc_encode = new_doc_encode[:-1]
+            # print(ratio,sum([len(sublist) for sublist in new_doc_encode]))
 
-                for para in new_doc_encode:
-                    new_doc.append(tokenizer.decode(para))
-                QA_json = {}  
-                QA_json["QA"] = QA 
-                QA_json["doc_index"] = doc_index
-                QA_json['depth'] = int(depth)  
-                QA_json['context'] = context  
-                QA_json["document_length"] = doc_len 
-                QA_json["whole_document"] = new_doc  
-                
-                json_objects.append(QA_json)  
-        doc_index += 1
+            for para in new_doc_encode:
+                new_doc.append(tokenizer.decode(para))
+            QA_json = {}  
+            QA_json["QA"] = QA 
+            QA_json["doc_index"] = doc_index
+            QA_json['depth'] = int(depth)  
+            QA_json['context'] = context  
+            QA_json["document_length"] = doc_len 
+            QA_json["whole_document"] = new_doc  
+            
+            json_objects.append(QA_json)  
+    doc_index += 1
 
     with open(args.QA_save_path, 'w', encoding='utf-8') as f:  
         json.dump(json_objects, f, ensure_ascii=False, indent=4)  

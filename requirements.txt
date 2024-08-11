@@ -1,2 +1,5 @@
 openai 
-
+pandas
+seaborn
+tiktoken
+nltk
