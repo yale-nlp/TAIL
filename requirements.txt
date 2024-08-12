@@ -4,3 +4,4 @@ seaborn
 tiktoken
 nltk
 numpy
+vllm

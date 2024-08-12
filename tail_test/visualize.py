@@ -33,7 +33,7 @@ def plot_box_result(args):
     plt.grid(True,color = "white")
     plt.legend([line], [args.test_model_name], loc='upper right')  
     plt.title(f'{args.test_model_name} box plot')  
-    plt.savefig(args.test_result_save_dir + f"/{model_name}_box_plot.png", dpi=300)
+    plt.savefig(args.test_result_save_dir + f"{model_name}_box_plot.png", dpi=300)
 
 def plot_line_result(args):
     model_name = args.test_model_name.split('/')[-1]
@@ -54,7 +54,7 @@ def plot_line_result(args):
     plt.ylabel('Depth (%)')  
     plt.title(f'{args.test_model_name} Results')  
     
-    plt.savefig(args.test_result_save_dir + f'/{model_name}_line_plot.png')
+    plt.savefig(args.test_result_save_dir + f'{model_name}_line_plot.png')
 
 
 def visualize(args):
