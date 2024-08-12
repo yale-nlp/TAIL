@@ -42,7 +42,7 @@ def answer(client,ground_truth,args,question,options_str,document):
         answers = [choice.message.content for choice in completion.choices]
     elif args.test_model_name in ["claude-3-haiku-20240307","gemini-1.5-flash","gemini-1.5-pro"]:
         answers = []
-        for i in range(3):
+        for i in range(5):
             completion = client.chat.completions.create(  
                 model=args.test_model_name,  
                 messages=[{"role": "user", "content": "I will give you a multiple choice question and a corresponding document. Please provide your chain of thoughts." + f"{question} Options: {options_str}"+"Please answer the above question refer to this document only: " + document},],
