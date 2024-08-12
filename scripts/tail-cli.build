@@ -8,13 +8,27 @@ from tail_test.benchmark_generation import gen_benchmark
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Generate QA dataset on a given document",
+        usage="""\
+tail-cli.build [--raw_document_path <path>] [--document_length <value>] 
+        [--depth_list <value>] [--QA_save_path <path>] 
+        [--gen_QA_model_name <name>]
+
+Options:
+--raw_document_path <path>    Path to the document your prepared.
+--document_length <value>     Expected token lengths for benchmarking. Multiple values can be provided.
+--depth_list <value>          Expected depths for your questions. Multiple values can be provided.
+--QA_save_path <path>         Path to save the generated QA dataset.
+--gen_QA_model_name <name>    Model name for generating the QA (default: gpt-4o).
+""",
+        formatter_class=argparse.RawTextHelpFormatter)
     # args for benchmark generation
-    parser.add_argument('--raw_document_path', type=str, help='path to the haystack')
+    parser.add_argument('--raw_document_path', type=str, help='path document you prepared')
     parser.add_argument('--document_length', type=int, nargs='+', default=[800], help='expect token lengths for your benchmark')
     parser.add_argument('--depth_list', type=int, nargs='+', default=[45], help='expext depths for your question')
     parser.add_argument('--QA_save_path', type=str, help='path to save the QA dataset')
-    parser.add_argument('--gen_QA_model_name', type=str, default='gpt-4-turbo', help='model name for generating QA')
+    parser.add_argument('--gen_QA_model_name', type=str, default='gpt-4o', help='model name for generating QA')
 
     args = parser.parse_args()
 
