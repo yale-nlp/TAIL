@@ -4,8 +4,10 @@ from openai import OpenAI
 import os
 import tiktoken
 from tqdm import tqdm
-  
+import numpy as np
 from nltk.tokenize import sent_tokenize 
+
+
 def combine_to_paragraphs(sentences, max_length=600):  
     paragraphs = []  
     current_paragraph = ""  
@@ -22,7 +24,34 @@ def combine_to_paragraphs(sentences, max_length=600):
         paragraphs.append(current_paragraph)  
     return paragraphs  
 
-def generate_QA(context, client, args, attempt=1, max_attempts=5):
+def RAG_filter(text, paragraphs, paragraph_embeds, context, question, options_str, ground_truth, client, model="text-embedding-3-large", top_n=5):
+    question_embed = client.embeddings.create(input=[text], model=model).data[0].embedding
+    similarities = [np.dot(question_embed, p_embed) / (np.linalg.norm(question_embed) * np.linalg.norm(p_embed)) for p_embed in paragraph_embeds]
+    top_indices = np.argsort(similarities)[::-1][:top_n]
+    top_paragraphs = [paragraphs[i] for i in top_indices]
+    filtered_paragraphs = [p.replace(context, "") for p in top_paragraphs]
+    combined_paragraphs = " ".join(filtered_paragraphs)
+    
+    ans = []
+    acc = 0
+    completion = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[{"role": "user", "content": "I will give you a multiple choice question and a corresponding document. Please provide your chain of thoughts." + f"{question} Options: {options_str}"+"Please answer the above question refer to this document only: " + combined_paragraphs},]  ,
+        n = 5,)  
+    answers = [choice.message.content for choice in completion.choices]
+    for LLM_answer in answers:
+        completion = client.chat.completions.create(
+            model="gpt-4o",
+            messages=[{"role": "user", "content": f"Please respond only in a single character in A,B,C,D,E,F: Here is a question: {question} options: {options_str}. Here's the candidate's response: {LLM_answer}. What is the candidate's choice?"}])
+        LLM_answer = completion.choices[0].message.content
+        if LLM_answer[0] == ground_truth:
+            acc += 1
+        ans.append(LLM_answer[0])
+    # print("RAG filter accuracy: ", acc)
+    return acc < 2
+
+
+def generate_QA(context, all_paragraphs_chars, p_embed, client, args, attempt=1, max_attempts=5):
     response = client.chat.completions.create(
         response_format={"type": "json_object"},
         model=args.gen_QA_model_name,
@@ -66,24 +95,25 @@ def generate_QA(context, client, args, attempt=1, max_attempts=5):
         ans.append(LLM_answer[0])
 
     if acc == 5 and "context" not in question:
-        return QA
+        if RAG_filter(context, all_paragraphs_chars, p_embed, context, question, options_str, ground_truth, client):
+            return QA
+        else:
+            return generate_QA(context, client, p_embed,args, attempt + 1, max_attempts)
     else:
         if attempt < max_attempts:
-            return generate_QA(context, client, args, attempt + 1, max_attempts)
+            return generate_QA(context, client, p_embed, args, attempt + 1, max_attempts)
         else:
-            # Proceed with the next context or handle this case as needed
-            print(f"QA quality check: Failed after {max_attempts} attempts. Proceeding with the next context.")
-            return None  # or handle this case as needed
+            return None  
 
-def process_paragraphs(all_paragraphs_tokens, tokenizer, client, args, sublist_index):
+def process_paragraphs(all_paragraphs_tokens, all_paragraphs_chars, p_embed, tokenizer, client, args, sublist_index):
 
     context = tokenizer.decode(all_paragraphs_tokens[sublist_index])
-    QA = generate_QA(context, client, args)
+    QA = generate_QA(context, all_paragraphs_chars, p_embed, client, args)
 
     if QA:
         return QA,context
     else:
-        return process_paragraphs(all_paragraphs_tokens, tokenizer, client, args, sublist_index + 1)
+        return process_paragraphs(all_paragraphs_tokens, all_paragraphs_chars, p_embed, tokenizer, client, args, sublist_index + 1)
 
 
 def find_sublist_index_by_position(nested_list, position):  
@@ -114,14 +144,14 @@ def gen_benchmark(args,client):
     
     total_tokens = sum([len(sublist) for sublist in all_paragraphs_tokens])
     total_chars = sum([len(sublist) for sublist in all_paragraphs_chars])
-    # print(f"total chars: {int(total_chars/1000)}K")
+    paragraph_embeds = [client.embeddings.create(input=[p], model="text-embedding-3-large").data[0].embedding for p in all_paragraphs_chars]
     print(f"Total tokens in raw document: {total_tokens}") 
     if total_tokens < max(args.document_length):
         raise ValueError("Total tokens in your raw document are less than the maximum document length specified! \nPlease input a longer document or decrease the maximum document length.")
     for depth in tqdm(args.depth_list, desc="Generating QA for each depths"):
         needle_point = int(total_tokens * (depth / 100))
         sublist_index = find_sublist_index_by_position(all_paragraphs_tokens, needle_point)
-        QA,context = process_paragraphs(all_paragraphs_tokens, tokenizer, client, args, sublist_index)
+        QA,context = process_paragraphs(all_paragraphs_tokens, all_paragraphs_chars, paragraph_embeds, tokenizer, client, args, sublist_index)
         for doc_len in args.document_length:
             ratio = doc_len/total_tokens
             new_doc_encode = all_paragraphs_tokens[int(sublist_index*(1-ratio)):int(sublist_index+ratio*(len(all_paragraphs_tokens)-sublist_index))]
