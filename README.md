@@ -1,19 +1,19 @@
 
 
-<center>
+<p align="center">
 <img src="img/logo.png" alt="img" width="40%">
 <h4 align="center">
 Automatic, Easy and Realistic tool for LLM Evaluation
 </h4>
-</center>
+</p>
 
 <p align="center">
 | <a href="https://yale-nlp.github.io/TAIL/"><b>Documentation</b></a> | <a href="https://arxiv.org/abs/2309.06180"><b>Paper</b></a> | 
 </p>
 
-<center>
+<p align="center">
 <img src="img/outline.png" alt="img" width="65%">
-</center>
+</p>
 
 ## Introduction
 TAIL is an automatic toolkit for creating realistic evaluation
