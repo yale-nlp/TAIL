@@ -21,7 +21,7 @@ Automatic, Easy and Realistic tool for LLM Evaluation
       <div class="card-body">
         <h3 class="card-title">Easy to customize</h3>
         <p class="card-text"> 
-            TAIL helps you generate benchmarks on your own documents (Patent, Papers, Financial Reports, anything you are interested in). It allows you to create test examples of any context length and questions at any depth you desire.
+            TAIL helps you generate benchmarks on your own documents (Patents, Papers, Financial Reports, anything you are interested in). It allows you to create test examples of any context length and questions at any depth you desire.
         </p>
       </div>
     </div>

@@ -21,9 +21,9 @@ Since TAIL relies on [vLLM](https://docs.vllm.ai/en/latest/) for off-line infere
 
 ###  Long-context Document Preparation
 
-To build a benchmark, firstly users need to prepare a long-context document as input. The input text should be constructed to meet the maximum length requirement of the models being evaluated.
+To build a benchmark, firstly users need to prepare a long-context document as input. TAIL allows users to build benchmarks on any given document, such as patents, papers or financial reports. The input text should be constructed to meet the maximum length requirement of the models being evaluated.
 
-For instance, if users want to generate a benchmark with 128k tokens to evaluate LLMs, input texts that are at least 128k tokens long are needed. If the texts users have prepared aren’t long enough to meet the above requirement, we suggest combining multiple shorter texts that are similar to each other. 
+For instance, if users want to generate a benchmark with 128k tokens to evaluate LLMs, input texts that are at least 128k tokens long are needed. If the texts users have prepared aren’t long enough to meet the above requirement, we suggest combining multiple shorter texts that are similar to each other. For example
 
 Users should prepare the input document in JSON file, in the format of `[{"text: YOUR_LONG_TEXT_HERE}]`
 ### Benchmark Generation
@@ -43,7 +43,7 @@ Options:
 
 The next step is to set the `document_length` and `depth` for your benchmark. `document_length` means how long the test document in the benchmark will be, while `depth` indicates how deep a question's evidence locates within the test document. For example, setting `document_length` to 8000 and  `depth` to 50 means generating a QA and test document of 8000 tokens, where the evidence for the question is located around the middle of the test document.
 
-Provide path for your long document and path to save your benchmark, specify `document_length` and `depth`,and then run `tail-cli.build` to start benchmark generation! Here's an example: 
+Provide path for your long document and path to save your benchmark, specify `document_length` and `depth`,and then run `tail-cli.build` to start benchmark generation. Here's an example: 
 ```
 tail-cli.build --raw_document_path "/data/raw.json" --QA_save_path "/data/QA.json" --document_length 8000 32000 64000 --depth_list 25 50 75
 ```
@@ -70,8 +70,7 @@ TAIL supports evaluation for both commercial LLMs using OpenAI API interface and
 
 Specific the context lengths and depths your want to test. For example, `--test_depth_list 30 80 --test_doc_length 64000 128000` means you want to test the question targetting at depth 30% and 70% of 64k tokens and 128k tokens documents. Be aware that you need to first generate QA for this specific depth and context length, otherwise TAIL will raise an error warning you that it can't find this QA in the QA file you provided. 
 
-Input the test model's name and path to the saved benchmark, provide document_length and depth you want to test, TAIL will automatically run the evaluation.
-
+Input the test model's name and path to the saved benchmark, provide document_length and depth you want to test, TAIL will automatically run the evaluation and save results in JSON format in `test_result_save_dir`.
 
 
 ### Results visualization
