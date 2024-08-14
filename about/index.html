@@ -4,28 +4,28 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="None">
         
         
-        <link rel="shortcut icon" href="img/favicon.ico">
-        <title>TAIL Documenation</title>
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/fontawesome.min.css" rel="stylesheet">
-        <link href="css/brands.min.css" rel="stylesheet">
-        <link href="css/solid.min.css" rel="stylesheet">
-        <link href="css/v4-font-face.min.css" rel="stylesheet">
-        <link href="css/base.css" rel="stylesheet">
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>About - TAIL Documenation</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
         <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css" >
         <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
-        <link href="stylesheets/extra.css" rel="stylesheet">
+        <link href="../stylesheets/extra.css" rel="stylesheet">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
         <script>hljs.highlightAll();</script> 
     </head>
 
-    <body class="homepage">
+    <body>
         <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href=".">TAIL Documenation</a>
+                <a class="navbar-brand" href="..">TAIL Documenation</a>
                 <!-- Expander button -->
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -36,13 +36,13 @@
                         <!-- Main navigation -->
                         <ul class="nav navbar-nav">
                             <li class="nav-item">
-                                <a href="." class="nav-link active" aria-current="page">Home</a>
+                                <a href=".." class="nav-link">Home</a>
                             </li>
                             <li class="nav-item">
-                                <a href="getting-started/" class="nav-link">Getting Started</a>
+                                <a href="../getting-started/" class="nav-link">Getting Started</a>
                             </li>
                             <li class="nav-item">
-                                <a href="userguide/" class="nav-link">User Guide</a>
+                                <a href="../userguide/" class="nav-link">User Guide</a>
                             </li>
                         </ul>
 
@@ -53,17 +53,7 @@
                             </a>
                         </li>
                             <li class="nav-item">
-                                <a rel="prev" class="nav-link disabled">
-                                    <i class="fa fa-arrow-left"></i> Previous
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a rel="next" href="getting-started/" class="nav-link">
-                                    Next <i class="fa fa-arrow-right"></i>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="https://github.com/yale-nlp/TAIL/edit/master/docs/index.md" class="nav-link"><i class="fa-brands fa-github"></i> Edit on GitHub</a>
+                                <a href="https://github.com/yale-nlp/TAIL/edit/master/docs/about.md" class="nav-link"><i class="fa-brands fa-github"></i> Edit on GitHub</a>
                             </li>
                     </ul>
                 </div>
@@ -82,85 +72,12 @@
     
     <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
         <ul class="nav flex-column">
-            
-            <li class="nav-item" data-bs-level="2"><a href="#welcome-to-tail" class="nav-link">Welcome to TAIL!</a>
-              <ul class="nav flex-column">
-              </ul>
-            </li>
         </ul>
     </div>
 </div></div>
                     <div class="col-md-9" role="main">
 
-<h2 id="welcome-to-tail">Welcome to TAIL!</h2>
-<p><center>
-<img src="img/TAIL.png" alt="TAIL" width="400">
-</center>
-<center>
-Automatic, Easy and Realistic tool for LLM Evaluation</p>
-<p></center>
-<center>
-<a href="getting-started/" class="btn btn-primary">Getting Started</a>
-<a href="userguide/" class="btn btn-primary">User Guide</a>
-</center></p>
-<div class="pt-2 pb-4 px-4 my-4 bg-body-tertiary rounded-3">
-<h3 class="text-center">Features</h3>
-
-<div class="row">
-  <div class="col-sm-6">
-    <div class="card mb-4">
-      <div class="card-body">
-        <h3 class="card-title">Easy to customize</h3>
-        <p class="card-text"> 
-            TAIL helps you generate benchmarks on your own documents (Patents, Papers, Financial Reports, anything you are interested in). It allows you to create test examples of any context length and questions at any depth you desire.
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="card mb-4">
-      <div class="card-body">
-        <h3 class="card-title">Realistic and natural</h3>
-        <p class="card-text">
-            Unlike the 
-            <a href="https://github.com/gkamradt/LLMTest_NeedleInAHaystack">needle-in-a-haystack</a> test, TAIL generate questions based on infomations from your own document, instead of inserting a piece of new infomation, making the benchmark more realistic and natural.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h3 class="card-title">Quality assured</h3>
-        <p class="card-text">
-            TAIL utilizes multiple quality assurance measures, including RAG-based filtering and rigorous quality checks, to eliminate subpar QAs and deliver a high-caliber benchmark.
-        </p>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h3 class="card-title">Ready-to-use</h3>
-        <p class="card-text">
-            TAIL integrates an out-of-the-box evaluation module that enables users to easily evaluate commercial LLMs via API calls and open-source LLMs via <a href="https://docs.vllm.ai/en/latest/">vLLM</a> on the generated benchmarks.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
-<!-- TAIL is a toolkit for automatically creating realistic evaluation
-benchmarks and assessing the performance
-of long-context LLMs. With TAIL, users
-can customize the generation of natural and reliable QAs at specific depths to construct a long-context,
-document-grounded QA benchmark and obtain
-visualized performance metrics of evaluated
-models. TAIL has the advantage of requiring minimal human annotation and generating natural questions based on user-provided
-long-context documents.  --></div>
+<p>About </p></div>
             </div>
         </div>
 
@@ -168,13 +85,13 @@ long-context documents.  --></div>
             <hr>
             <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
         </footer>
-        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="../js/bootstrap.bundle.min.js"></script>
         <script>
-            var base_url = ".",
+            var base_url = "..",
                 shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
         </script>
-        <script src="js/base.js"></script>
-        <script src="search/main.js"></script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
 
         <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -239,8 +156,3 @@ long-context documents.  --></div>
 
     </body>
 </html>
-
-<!--
-MkDocs version : 1.6.0
-Build Date UTC : 2024-08-14 20:07:43.252898+00:00
--->

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="light">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>User Guide - TAIL Documenation</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/fontawesome.min.css" rel="stylesheet">
+        <link href="../css/brands.min.css" rel="stylesheet">
+        <link href="../css/solid.min.css" rel="stylesheet">
+        <link href="../css/v4-font-face.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link id="hljs-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/docco.min.css" >
+        <link id="hljs-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github-dark.min.css" disabled>
+        <link href="../stylesheets/extra.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">TAIL Documenation</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="nav-item">
+                                <a href=".." class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="../getting-started/" class="nav-link">Getting Started</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="./" class="nav-link active" aria-current="page">User Guide</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ms-md-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../getting-started/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" class="nav-link disabled">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="https://github.com/yale-nlp/TAIL/edit/master/docs/userguide.md" class="nav-link"><i class="fa-brands fa-github"></i> Edit on GitHub</a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-body-tertiary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-bs-level="1"><a href="#user-guide" class="nav-link">User Guide</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-bs-level="2"><a href="#installation" class="nav-link">Installation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#long-context-document-preparation" class="nav-link">Long-context Document Preparation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#benchmark-generation" class="nav-link">Benchmark Generation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#model-evaluation-visualization" class="nav-link">Model Evaluation &amp; Visualization</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-bs-level="2"><a href="#results-visualization" class="nav-link">Results visualization</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="user-guide">User Guide</h1>
+<h2 id="installation">Installation</h2>
+<h5 id="install-the-package-from-pypi">Install the package from PyPi:</h5>
+<pre><code># (Recommended) Create a new conda environment.
+conda create -n tail python=3.10 -y
+conda activate tail
+
+# Install tailtest
+pip install tailtest
+</code></pre>
+<h5 id="build-from-source">Build from source</h5>
+<pre><code>git clone https://github.com/vllm-project/vllm.git
+pip install -e .  
+</code></pre>
+<p>Since TAIL relies on <a href="https://docs.vllm.ai/en/latest/">vLLM</a> for off-line inference, which only runs on Linux and needs to build from source if you are not using CUDA 11.8 or 12.1. So if you encounter problems with vLLM and only want to use TAIL for benchmark generation or test LLMs using API calls, you can clone the repository and modify it accordingly.</p>
+<p>Set your OPENAI_API_KEY as an environment variable. If you want to costimize <code>base_url</code>, clone the repository and add it in <code>tail-cli.build</code> and <code>tail-cli.eval</code>.</p>
+<pre><code>export OPENAI_API_KEY=&quot;...&quot;
+</code></pre>
+<h2 id="long-context-document-preparation">Long-context Document Preparation</h2>
+<p>To build a benchmark, firstly users need to prepare a long-context document as input. TAIL allows users to build benchmarks on any given document, such as patents, papers or financial reports. The input text should be constructed to meet the maximum length requirement of the models being evaluated.</p>
+<p>For instance, if users want to generate a benchmark with 128k tokens to evaluate LLMs, input texts that are at least 128k tokens long are needed. If the texts users have prepared aren’t long enough to meet the above requirement, we suggest combining multiple shorter texts that are similar to each other. For example</p>
+<p>Users should prepare the input document in JSON file, in the format of <code>[{"text: YOUR_LONG_TEXT_HERE}]</code></p>
+<h2 id="benchmark-generation">Benchmark Generation</h2>
+<pre><code>usage: tail-cli.build [--raw_document_path &lt;path&gt;] [--document_length &lt;value&gt;] 
+    [--depth_list &lt;value&gt;] [--QA_save_path &lt;path&gt;] 
+    [--gen_QA_model_name &lt;name&gt;]
+
+Options:
+--raw_document_path &lt;path&gt;    Path to the document your prepared.
+--document_length &lt;value&gt;     Expected token lengths for benchmarking. Multiple values can be provided.
+--depth_list &lt;value&gt;          Expected depths for your questions. Multiple values can be provided.
+--QA_save_path &lt;path&gt;         Path to save the generated QA dataset.
+--gen_QA_model_name &lt;name&gt;    Model name for generating the QA (default: gpt-4o).
+</code></pre>
+<p>The next step is to set the <code>document_length</code> and <code>depth</code> for your benchmark. <code>document_length</code> means how long the test document in the benchmark will be, while <code>depth</code> indicates how deep a question's evidence locates within the test document. For example, setting <code>document_length</code> to 8000 and  <code>depth</code> to 50 means generating a QA and test document of 8000 tokens, where the evidence for the question is located around the middle of the test document.</p>
+<p>Provide path for your long document and path to save your benchmark, specify <code>document_length</code> and <code>depth</code>,and then run <code>tail-cli.build</code> to start benchmark generation. Here's an example: </p>
+<pre><code>tail-cli.build --raw_document_path &quot;/data/raw.json&quot; --QA_save_path &quot;/data/QA.json&quot; --document_length 8000 32000 64000 --depth_list 25 50 75
+</code></pre>
+<h2 id="model-evaluation-visualization">Model Evaluation &amp; Visualization</h2>
+<pre><code>usage: tail-cli.eval [--QA_save_path &lt;path&gt;] [--test_model_name &lt;name&gt;] 
+                  [--test_depth_list &lt;value&gt;] [--test_doc_length &lt;value&gt;] 
+                  [--test_result_save_dir &lt;path&gt;]
+
+Options:
+--QA_save_path &lt;path&gt;          Path to the saved QA dataset.
+--test_model_name &lt;name&gt;       Test model name (default: gpt-4o).
+--test_depth_list &lt;value&gt;      Depths you want to test. Multiple values can be provided (default: 30 70).
+--test_doc_length &lt;value&gt;      Token lengths you want to test. Multiple values can be provided (default: 8000).
+--test_result_save_dir &lt;path&gt;  Path to save the test results and visualizations.  
+</code></pre>
+<p>TAIL supports evaluation for both commercial LLMs using OpenAI API interface and off-line inference using vLLM. </p>
+<ul>
+<li>
+<p>For commericial LLMs that compatibale with OpenAI interface, first set your ‘OPENAI_API_KEY’ Environment Variable, you can find a guide <a href="https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety">here</a> and set up your base_url if needed. Then simply pass your model name using <code>--test_model_name "gpt-4o"</code>.</p>
+</li>
+<li>
+<p>For open-source LLMs, pass the your model name in command line using its name or local dir. The list of supported models can be found at <a href="https://docs.vllm.ai/en/stable/models/supported_models.html#supported-models">supported models</a>. e.g.  <code>--test_model_name "meta-llama/Meta-Llama-3.1-70B"</code>
+We currently set the temperature to 0.8 and generate 5 responses for each question, then provide the average results. You may customize it in <code>tail_test/test_llm_performance.py</code>.</p>
+</li>
+</ul>
+<p>Specific the context lengths and depths your want to test. For example, <code>--test_depth_list 30 80 --test_doc_length 64000 128000</code> means you want to test the question targetting at depth 30% and 70% of 64k tokens and 128k tokens documents. Be aware that you need to first generate QA for this specific depth and context length, otherwise TAIL will raise an error warning you that it can't find this QA in the QA file you provided. </p>
+<p>Input the test model's name and path to the saved benchmark, provide document_length and depth you want to test, TAIL will automatically run the evaluation and save results in JSON format in <code>test_result_save_dir</code>.</p>
+<h2 id="results-visualization">Results visualization</h2>
+<p>TAIL will automatically visualize the results after the evaluation is done. A line plot and a heatmap showing model's performance across context lengths and depths will be stored in the <code>result_save_dir</code> users provide. Here are example visuilaztions for GLM-4-9B-128K: </p>
+<p><center></p>
+<div style="display: flex; align-items: center;">
+    <img src="glm_all.png" alt="TAIL" style="width: 300px; height: 300px; object-fit: cover; margin-right: 30px;">
+    <img src="line.jpg" alt="TAIL" style="width: 270px; height: 300px; object-fit: cover; margin-left: 40px;">
+</div>
+<p></center></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script src="../js/bootstrap.bundle.min.js"></script>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js"></script>
+        <script src="../search/main.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
