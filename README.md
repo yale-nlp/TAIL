@@ -1,6 +1,8 @@
 # TAIL: A Toolkit for Automatic and Realistic Long-Context Large Language Model Evaluation
+<center>
+<img src="img/outline.png" alt="img" width="600">
+</center>
 
-![img](img/outline.png)
 ## Introduction
 TAIL can generate high-quality benchmark on any source documents. First, users should prepare a long-context document as input and provide expect lengths and depth for their questions. 
 
