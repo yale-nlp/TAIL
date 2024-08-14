@@ -1,49 +1,55 @@
-# TAIL: A Toolkit for Automatic and Realistic Long-Context Large Language Model Evaluation
+
+
 <center>
-<img src="img/outline.png" alt="img" width="600">
+<img src="img/logo.png" alt="img" width="40%">
+<h4 align="center">
+Automatic, Easy and Realistic tool for LLM Evaluation
+</h4>
+</center>
+
+<p align="center">
+| <a href="https://yale-nlp.github.io/TAIL/"><b>Documentation</b></a> | <a href="https://arxiv.org/abs/2309.06180"><b>Paper</b></a> | 
+</p>
+
+<center>
+<img src="img/outline.png" alt="img" width="65%">
 </center>
 
 ## Introduction
-TAIL can generate high-quality benchmark on any source documents. First, users should prepare a long-context document as input and provide expect lengths and depth for their questions. 
-
-
-## Usage
-
-We provide a detailed documentation at [https://yale-nlp.github.io/TAIL/](https://yale-nlp.github.io/TAIL/). 
-
+TAIL is an automatic toolkit for creating realistic evaluation
+benchmarks and assessing the performance of long-context LLMs. 
+With TAIL, users
+can customize the building of a long-context,
+document-grounded QA benchmark and obtain
+visualized performance metrics of evaluated
+models.
 ## Quickstart 
+1. install the package from PyPi:
+    ```
+    # (Recommended) Create a new conda environment.
+    conda create -n tail python=3.10 -y
+    conda activate tail
 
-1. Prepare a source document you want to use to generate benchmark and organize in the format of json.
-    [{"text": "Content of your document."}]
+    # Install tailtest
+    pip install tailtest
+    ```
+    set yout OPENAI_API_KEY:
+    ```
+    export OPENAI_API_KEY="..."
+    ```
+2. Prepare a source document you want to use to generate benchmark and organize in the format of json.
+    `[{"text": "Content of your document"}]`
 
-2. Benchmark Generation:
+3. Benchmark Generation:
 
     ```
-    usage: tail-cli.build [--raw_document_path <path>] [--document_length <value>] 
-        [--depth_list <value>] [--QA_save_path <path>] 
-        [--gen_QA_model_name <name>]
-
-    Options:
-    --raw_document_path <path>    Path to the document your prepared.
-    --document_length <value>     Expected token lengths for benchmarking. Multiple values can be provided.
-    --depth_list <value>          Expected depths for your questions. Multiple values can be provided.
-    --QA_save_path <path>         Path to save the generated QA dataset.
-    --gen_QA_model_name <name>    Model name for generating the QA (default: gpt-4o).
+    tail-cli.build --raw_document_path "/data/raw.json" --QA_save_path "/data/QA.json" --document_length 8000 32000 64000 --depth_list 25 50 75
     ```
 
-3. Model Evaluation & Testing:
+4. Model Evaluation & Testing:
 
     ```
-    usage: tail-cli.eval [--QA_save_path <path>] [--test_model_name <name>] 
-                      [--test_depth_list <value>] [--test_doc_length <value>] 
-                      [--test_result_save_dir <path>]
-
-    Options:
-    --QA_save_path <path>          Path to the saved QA dataset.
-    --test_model_name <name>       Test model name (default: gpt-4o).
-    --test_depth_list <value>      Depths you want to test. Multiple values can be provided (default: 30 70).
-    --test_doc_length <value>      Token lengths you want to test. Multiple values can be provided (default: 8000).
-    --test_result_save_dir <path>  Path to save the test results and visualizations.  
+    tail-cli.eval --QA_save_path "/data/QA.json" --test_model_name "gpt-4o" --test_depth_list 25 75 --test_doc_length 8000 32000 --test_result_save_dir /data/result/
     ```
 
 ## Citation
