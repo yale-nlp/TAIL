@@ -20,8 +20,8 @@ Automatic, Easy and Realistic tool for LLM Evaluation
     <div class="card mb-4">
       <div class="card-body">
         <h3 class="card-title">Easy to customize</h3>
-        <p class="card-text">
-            TAIL allows you to generate test examples of any context length, and questions at any depth you want.
+        <p class="card-text"> 
+            TAIL helps you generate benchmarks on your own documents (Patent, Papers, Financial Reports, anything you are interested in). It allows you to create test examples of any context length and questions at any depth you desire.
         </p>
       </div>
     </div>
@@ -29,10 +29,10 @@ Automatic, Easy and Realistic tool for LLM Evaluation
   <div class="col-sm-6">
     <div class="card mb-4">
       <div class="card-body">
-        <h3 class="card-title">Realistic and Natural QA</h3>
+        <h3 class="card-title">Realistic and natural</h3>
         <p class="card-text">
             Unlike the 
-            <a href="https://github.com/gkamradt/LLMTest_NeedleInAHaystack">needle-in-a-haystack</a> test, TAIL generate questions based on infomations from your own document, instead of inserting a piece of new infomation, which 
+            <a href="https://github.com/gkamradt/LLMTest_NeedleInAHaystack">needle-in-a-haystack</a> test, TAIL generate questions based on infomations from your own document, instead of inserting a piece of new infomation, making the benchmark more realistic and natural.
         </p>
       </div>
     </div>
@@ -43,9 +43,9 @@ Automatic, Easy and Realistic tool for LLM Evaluation
   <div class="col-sm-6">
     <div class="card">
       <div class="card-body">
-        <h3 class="card-title">Multi check to ensure quality</h3>
+        <h3 class="card-title">Quality assured</h3>
         <p class="card-text">
-            TAIL has multiple quality checking modules to ensure high quality QAs. 
+            TAIL utilizes multiple quality assurance measures, including RAG-based filtering and rigorous quality checks, to eliminate subpar QAs and deliver a high-caliber benchmark.
         </p>
       </div>
     </div>
@@ -53,20 +53,20 @@ Automatic, Easy and Realistic tool for LLM Evaluation
   <div class="col-sm-6">
     <div class="card">
       <div class="card-body">
-        <h3 class="card-title">Ready-to-use evaluation module</h3>
+        <h3 class="card-title">Ready-to-use</h3>
         <p class="card-text">
-            TAIL integrates a out-of-the-box evaluation module that enables users to easily evaluate commercial LLMs via API calls and open-source LLMs via <a href="https://docs.vllm.ai/en/latest/">vLLM</a> on their generated benchmarks.
+            TAIL integrates an out-of-the-box evaluation module that enables users to easily evaluate commercial LLMs via API calls and open-source LLMs via <a href="https://docs.vllm.ai/en/latest/">vLLM</a> on the generated benchmarks.
         </p>
       </div>
     </div>
   </div>
 </div>
 </div>
-TAIL is a toolkit for automatically creating realistic evaluation
+<!-- TAIL is a toolkit for automatically creating realistic evaluation
 benchmarks and assessing the performance
 of long-context LLMs. With TAIL, users
 can customize the generation of natural and reliable QAs at specific depths to construct a long-context,
 document-grounded QA benchmark and obtain
 visualized performance metrics of evaluated
 models. TAIL has the advantage of requiring minimal human annotation and generating natural questions based on user-provided
-long-context documents. 
+long-context documents.  -->
