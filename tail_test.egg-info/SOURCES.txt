@@ -1,0 +1,14 @@
+README.md
+setup.py
+scripts/tail-cli.build
+scripts/tail-cli.eval
+tail_test/__init__.py
+tail_test/benchmark_generation.py
+tail_test/rag_filter.py
+tail_test/test_llm_performance.py
+tail_test/visualize.py
+tail_test.egg-info/PKG-INFO
+tail_test.egg-info/SOURCES.txt
+tail_test.egg-info/dependency_links.txt
+tail_test.egg-info/requires.txt
+tail_test.egg-info/top_level.txt
