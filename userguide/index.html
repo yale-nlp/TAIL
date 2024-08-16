@@ -123,7 +123,7 @@ conda activate tail
 pip install tailtest
 </code></pre>
 <h5 id="build-from-source">Build from source</h5>
-<pre><code>git clone https://github.com/vllm-project/vllm.git
+<pre><code>git clone https://github.com/yale-nlp/TAIL.git
 pip install -e .  
 </code></pre>
 <p>Since TAIL relies on <a href="https://docs.vllm.ai/en/latest/">vLLM</a> for off-line inference, which only runs on Linux and needs to build from source if you are not using CUDA 11.8 or 12.1. So if you encounter problems with vLLM and only want to use TAIL for benchmark generation or test LLMs using API calls, you can clone the repository and modify it accordingly.</p>
