@@ -2,7 +2,7 @@
 
 import argparse,os
 from openai import OpenAI  
-# from tail_test.test_llm_performance import test_llm_performance
+from tail_test.test_llm_performance import test_llm_performance
 from tail_test.visualize import visualize
 
 

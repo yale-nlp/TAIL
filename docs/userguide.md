@@ -9,7 +9,7 @@ conda create -n tail python=3.10 -y
 conda activate tail
 
 # Install tailtest
-pip install tailtest
+pip install tail-test
 ```
 
 ##### Build from source
