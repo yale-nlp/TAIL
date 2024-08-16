@@ -8,7 +8,7 @@ PACKAGE_NAME = "tail_test"
 # VERSION = version_meta["__version__"]
 VERSION = "0.0.1"
 
-with open("README.md", "r") as fh:
+with open("PYPI_README.md", "r") as fh:
     long_description = fh.read()
 
 def parse_requirements(filename):
