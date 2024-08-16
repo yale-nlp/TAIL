@@ -5,3 +5,5 @@ tiktoken
 nltk
 numpy
 vllm
+matplotlib
+numpy

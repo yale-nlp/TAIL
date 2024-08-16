@@ -14,7 +14,7 @@ pip install tailtest
 
 ##### Build from source
 ```
-git clone https://github.com/vllm-project/vllm.git
+git clone https://github.com/yale-nlp/TAIL.git
 pip install -e .  
 ```
 Since TAIL relies on [vLLM](https://docs.vllm.ai/en/latest/) for off-line inference, which only runs on Linux and needs to build from source if you are not using CUDA 11.8 or 12.1. So if you encounter problems with vLLM and only want to use TAIL for benchmark generation or test LLMs using API calls, you can clone the repository and modify it accordingly.

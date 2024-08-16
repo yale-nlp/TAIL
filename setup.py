@@ -24,7 +24,7 @@ if __name__ == "__main__":
         install_requires=parse_requirements("requirements.txt"),
         python_requires=">=3.8.3",
         scripts=["scripts/tail-cli.build","scripts/tail-cli.eval"],
-        description="This is a description.",
+        description="A Toolkit for automatic LLM Evaluation.",
         long_description=long_description,
         long_description_content_type="text/markdown",
     )
