@@ -5,10 +5,12 @@ import os
 import tiktoken
 from tqdm import tqdm
 import numpy as np
+import nltk
+nltk.download('punkt')
 from nltk.tokenize import sent_tokenize 
 
 
-def combine_to_paragraphs(sentences, max_length=600):  
+def combine_to_paragraphs(sentences, max_length=3000):  
     paragraphs = []  
     current_paragraph = ""  
       
@@ -98,10 +100,10 @@ def generate_QA(context, all_paragraphs_chars, p_embed, client, args, attempt=1,
         if RAG_filter(context, all_paragraphs_chars, p_embed, context, question, options_str, ground_truth, client):
             return QA
         else:
-            return generate_QA(context, client, p_embed,args, attempt + 1, max_attempts)
+            return generate_QA(context,all_paragraphs_chars, p_embed, client, args, attempt + 1, max_attempts)
     else:
         if attempt < max_attempts:
-            return generate_QA(context, client, p_embed, args, attempt + 1, max_attempts)
+            return generate_QA(context, all_paragraphs_chars, p_embed,client,  args, attempt + 1, max_attempts)
         else:
             return None  
 
@@ -131,7 +133,6 @@ def gen_benchmark(args,client):
 
     sentences = sent_tokenize(data_all[0]["text"])
     paragraphs = combine_to_paragraphs(sentences)
-    
     doc_index = 0
     tokenizer = tiktoken.encoding_for_model(args.gen_QA_model_name)
 
@@ -141,7 +142,7 @@ def gen_benchmark(args,client):
     for context in paragraphs:
         all_paragraphs_tokens.append(tokenizer.encode(context))
         all_paragraphs_chars.append(context)
-    
+     
     total_tokens = sum([len(sublist) for sublist in all_paragraphs_tokens])
     total_chars = sum([len(sublist) for sublist in all_paragraphs_chars])
     paragraph_embeds = [client.embeddings.create(input=[p], model="text-embedding-3-large").data[0].embedding for p in all_paragraphs_chars]
