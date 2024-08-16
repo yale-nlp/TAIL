@@ -8,7 +8,7 @@ conda create -n tail python=3.10 -y
 conda activate tail
 
 # Install tailtest
-pip install tailtest
+pip install tail-test
 ```
 Set your OPENAI_API_KEY as an environment variable.
 ```
