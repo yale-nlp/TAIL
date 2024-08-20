@@ -1,16 +1,16 @@
 [
     {
         "QA": {
-            "question": "What is the duration after which the federal government is required to conduct a review of the Cannabis Act?",
+            "question": "What is required from license holders to obtain an export permit for cannabis under the Cannabis Act?",
             "options": {
-                "A": "One year",
-                "B": "Two years",
-                "C": "Three years",
-                "D": "Four years",
-                "E": "Five years",
-                "F": "Seven years"
+                "A": "Written consent from the importing country's government",
+                "B": "Detailed information about the substance to be exported and the importer",
+                "C": "Approval from the federal Minister of Health",
+                "D": "A permit application fee and proof of business registration",
+                "E": "A detailed environmental impact report for the shipment",
+                "F": "Consent from local law enforcement"
             },
-            "answer": "C"
+            "answer": "B"
         },
         "doc_index": 0,
         "depth": 50,

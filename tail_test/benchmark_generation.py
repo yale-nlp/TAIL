@@ -38,7 +38,7 @@ def RAG_filter(text, paragraphs, paragraph_embeds, context, question, options_st
     acc = 0
     completion = client.chat.completions.create(
         model="gpt-4o",
-        messages=[{"role": "user", "content": "I will give you a multiple choice question and a corresponding document. Please provide your chain of thoughts." + f"{question} Options: {options_str}"+"Please answer the above question refer to this document only: " + combined_paragraphs},]  ,
+        messages=[{"role": "user", "content": "I will give you a multiple choice question and a corresponding document. Please provide your chain of thoughts. If the question is answerable given the document, simplt respond unanswerable." + f"{question} Options: {options_str}"+"Please answer the above question refer to this document only: " + combined_paragraphs},]  ,
         n = 5,)  
     answers = [choice.message.content for choice in completion.choices]
     for LLM_answer in answers:
@@ -49,11 +49,24 @@ def RAG_filter(text, paragraphs, paragraph_embeds, context, question, options_st
         if LLM_answer[0] == ground_truth:
             acc += 1
         ans.append(LLM_answer[0])
-    # print("RAG filter accuracy: ", acc)
-    return acc < 2
+    
+    return acc <= 2
 
 
 def generate_QA(context, all_paragraphs_chars, p_embed, client, args, attempt=1, max_attempts=5):
+    example = '''{
+            'question': 'What is required from license holders to obtain an export permit for cannabis under the Cannabis Act?',
+            'options': {
+                'A': "Written consent from the importing country's government",
+                'B': 'Detailed information about the substance to be exported and the importer',
+                'C': 'Approval from the federal Minister of Health',
+                'D': 'A permit application fee and proof of business registration',
+                'E': 'A detailed environmental impact report for the shipment',
+                'F': 'Consent from local law enforcement'
+            },
+            'answer': 'B'
+        }'''
+
     response = client.chat.completions.create(
         response_format={"type": "json_object"},
         model=args.gen_QA_model_name,
@@ -63,12 +76,12 @@ def generate_QA(context, all_paragraphs_chars, p_embed, client, args, attempt=1,
         },
         {
             "role": "user",
-            "content": "Here's the context: " + context + " Please respond in the format of json, start with question:."
+            "content": "Here's the context: " + context + " Please respond in the format of json, here's an example: " + example
         }]
     )
     QA = response.choices[0].message.content
     QA = json.loads(QA)
-
+    print(QA)
     question = QA["question"]
     options = QA["options"]
     options_str = ' '.join([f"{key}: {value}" for key, value in options.items()])
@@ -81,7 +94,7 @@ def generate_QA(context, all_paragraphs_chars, p_embed, client, args, attempt=1,
     completion = client.chat.completions.create(
         model="gpt-4o",
         messages=[{"role": "user", "content": "I will give you a multiple choice question and a corresponding document. Please provide your chain of thoughts." + f"{question} Options: {options_str}"+"Please answer the above question refer to this document only: " + context},]  ,
-        n = 5,
+        n = 3,
         )  
     answers = [choice.message.content for choice in completion.choices]
     for LLM_answer in answers:
@@ -96,7 +109,7 @@ def generate_QA(context, all_paragraphs_chars, p_embed, client, args, attempt=1,
             acc += 1
         ans.append(LLM_answer[0])
 
-    if acc == 5 and "context" not in question:
+    if acc >= 4 and "context" not in question:
         if RAG_filter(context, all_paragraphs_chars, p_embed, context, question, options_str, ground_truth, client):
             return QA
         else:
@@ -146,7 +159,7 @@ def gen_benchmark(args,client):
     total_tokens = sum([len(sublist) for sublist in all_paragraphs_tokens])
     total_chars = sum([len(sublist) for sublist in all_paragraphs_chars])
     paragraph_embeds = [client.embeddings.create(input=[p], model="text-embedding-3-large").data[0].embedding for p in all_paragraphs_chars]
-    print(f"Total tokens in raw document: {total_tokens}") 
+    # print(f"Total tokens in raw document: {total_tokens}") 
     if total_tokens < max(args.document_length):
         raise ValueError("Total tokens in your raw document are less than the maximum document length specified! \nPlease input a longer document or decrease the maximum document length.")
     for depth in tqdm(args.depth_list, desc="Generating QA for each depths"):
