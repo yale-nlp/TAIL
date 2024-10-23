@@ -33,8 +33,7 @@ Options:
     
     args = parser.parse_args()
 
-    client = OpenAI(base_url="https://yanlp.zeabur.app/v1", api_key=os.environ["OPENAI_API_KEY"])
-
+    client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
     test_llm_performance(args,client)
     visualize(args)
 

@@ -27,11 +27,10 @@ Options:
     parser.add_argument('--depth_list', type=int, nargs='+', default=[45], help='expext depths for your question')
     parser.add_argument('--QA_save_path', type=str, help='path to save the QA dataset')
     parser.add_argument('--gen_QA_model_name', type=str, default='gpt-4o', help='model name for generating QA')
-
+ 
     args = parser.parse_args()
 
-    client = OpenAI(base_url="https://yanlp.zeabur.app/v1", api_key=os.environ["OPENAI_API_KEY"])
-
+    client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
     gen_benchmark(args,client) 
 
 
