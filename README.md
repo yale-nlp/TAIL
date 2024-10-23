@@ -43,7 +43,7 @@ models.
 3. Benchmark Generation:
 
     ```
-    tail-cli.build --raw_document_path "/data/raw.json" --QA_save_path "/data/QA.json" --document_length 8000 32000 64000 --depth_list 25 50 75
+    tail-cli.build --raw_document_path "/Users/frank/Desktop/code/TAIL/data/law_10.json" --QA_save_path "/Users/frank/Desktop/code/TAIL/data/QA_law.json" --document_length 8000 16000 32000 48000 64000 80000 96000 112000 128000 --depth_list 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80 85 90 95
     ```
 
 4. Model Evaluation & Testing:

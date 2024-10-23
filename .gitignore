@@ -4,3 +4,6 @@ site
 .DS_Store
 dist
 build
+result
+data
+misc
