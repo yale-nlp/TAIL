@@ -30,7 +30,7 @@ Options:
 
     args = parser.parse_args()
 
-    client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+    client = OpenAI(api_key=os.environ["OPENAI_API_KEY"],base_url="https://yanlp.zeabur.app/v1")
     gen_benchmark(args,client) 
 
 

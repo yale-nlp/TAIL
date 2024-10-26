@@ -74,6 +74,7 @@ def test_llm_performance(args,client):
 
     num = 0
     start_time = time.time()
+    print(f"[TAIL] Start testing {model_name}. Total test sample numbers: {len(matching_entries)}")
     for item in matching_entries:   
         num += 1
         token_lengths = item["document_length"]
@@ -108,7 +109,7 @@ def test_llm_performance(args,client):
     #     with open(args.test_result_save_dir + f"result_{model_name}.json", 'r') as json_file:
     #         data = json.load(json_file)
     #     result = data + result
-    
-    with open(args.test_result_save_dir + f"result_{model_name}.json", 'w') as json_file:  
+    print(f"[TAIL] Sucessfully finished testing {model_name} on {args.QA_save_path}.")
+    with open(os.path.join(args.test_result_save_dir, f"result_{model_name}.json"), 'w') as json_file:  
         json.dump(result, json_file)  
 

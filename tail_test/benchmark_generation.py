@@ -34,14 +34,12 @@ def combine_to_paragraphs(sentences, max_length=600):
 
 def RAG_filter(text, paragraphs, paragraph_embeds, context, question, options_str, ground_truth, client, model="text-embedding-3-large", top_n=3):
     question_embed = client.embeddings.create(input=[text], model=model).data[0].embedding
-    question_embed = embed_model.encode(text)
+
     similarities = [np.dot(question_embed, p_embed) / (np.linalg.norm(question_embed) * np.linalg.norm(p_embed)) for p_embed in paragraph_embeds]
     top_indices = np.argsort(similarities)[::-1][:top_n]
     top_paragraphs = [paragraphs[i] for i in top_indices]
     filtered_paragraphs = [p.replace(context, "") for p in top_paragraphs]
     combined_paragraphs = " ".join(filtered_paragraphs)
-    print("Question: ", question, "Options: ", options_str)
-    print("Combined Paragraphs: ", combined_paragraphs)
     ans = []
     acc = 0
     completion = client.chat.completions.create(
@@ -53,11 +51,10 @@ def RAG_filter(text, paragraphs, paragraph_embeds, context, question, options_st
         model="gpt-4o",
         messages=[{"role": "user", "content": f"Please respond only in a single character in A,B,C,D,E,F: Here is a question: {question} options: {options_str}. Here's the candidate's response: {completion.choices[0].message.content}. What is the candidate's choice? If the candidate's response is unanswerable, please respond with 'U'."}])
     LLM_answer = completion.choices[0].message.content
-    print("Ground Truth: ", ground_truth, "LLM Answer: ", LLM_answer)
     if LLM_answer[0] == ground_truth:
         acc += 1
     ans.append(LLM_answer[0])
-    print("RAG Accuracy: ", acc)
+   
     return acc == 0
 
 
@@ -113,10 +110,16 @@ def generate_QA(context, all_paragraphs_chars, p_embed, client, args, attempt=1,
     if LLM_answer[0] == ground_truth:
         acc += 1
     ans.append(LLM_answer[0])
-    print("Check Accuracy: ", acc)
     if acc == 1 and "context" not in question:
         if RAG_filter(context, all_paragraphs_chars, p_embed, context, question, options_str, ground_truth, client):
+            question = QA["question"]
+            options = QA["options"]
+            ground_truth = QA["answer"][0]
+            print("Question: ", question)
+            print("Options: ", options)
+            print("Ground Truth: ", ground_truth)
             return QA
+            
         else:
             return generate_QA(context,all_paragraphs_chars, p_embed, client, args, attempt + 1, max_attempts)
     else:
@@ -149,10 +152,11 @@ def gen_benchmark(args,client):
     with open(args.raw_document_path, 'r', encoding='utf-8') as file:  
         data_all = json.load(file) 
     doc_index = 0
-    for i in range(len(data)):
+    for i in range(len(data_all)):
         tokenizer = tiktoken.encoding_for_model("gpt-4o")
         context = data_all[i]["text"]
-        
+        if len(tokenizer.encode(context)) > max(args.document_length)+1000:
+            context = tokenizer.decode(tokenizer.encode(context)[:max(args.document_length)+1000])
         sentences = sent_tokenize(context)
         paragraphs = combine_to_paragraphs(sentences)
         json_objects = [] 
@@ -163,12 +167,14 @@ def gen_benchmark(args,client):
             all_paragraphs_chars.append(context)
         # print(len(all_paragraphs_tokens))
         total_tokens = sum([len(sublist) for sublist in all_paragraphs_tokens])
-
+        print("Total tokens: ", total_tokens)
+        print("[TAIL] Start emebedding source document...")
         paragraph_embeds = [client.embeddings.create(input=[p], model="text-embedding-3-large").data[0].embedding for p in all_paragraphs_chars]
-        
+        print("[TAIL] Embedding finished!")
+        print("[TAIL] Start generating QA...")
         if total_tokens < max(args.document_length):
             raise ValueError("Total tokens in your raw document are less than the maximum document length specified! \nPlease input a longer document or decrease the maximum document length.")
-        for depth in tqdm(args.depth_list, desc="Generating QA for each depths"):
+        for depth in args.depth_list:
             needle_point = int(total_tokens * (depth / 100))
             sublist_index = find_sublist_index_by_position(all_paragraphs_tokens, needle_point)
             
@@ -192,7 +198,8 @@ def gen_benchmark(args,client):
                 QA_json["whole_document"] = new_doc  
                 
                 json_objects.append(QA_json)  
-                print(f"QA for depth: {depth}, document length: {doc_len} generated!")
+                print(f"QA for depth {depth}% generated!")
+                
         doc_index += 1
 
         if os.path.exists(args.QA_save_path):
@@ -201,3 +208,5 @@ def gen_benchmark(args,client):
             json_objects = data + json_objects
         with open(args.QA_save_path, 'w', encoding='utf-8') as f:  
             json.dump(json_objects, f, ensure_ascii=False, indent=4)  
+        print(f"[TAIL] Succefully saved QA to {args.QA_save_path}!")
+    
