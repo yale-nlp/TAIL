@@ -132,7 +132,7 @@ pip install tail-test
 </code></pre>
 <h2 id="test-llms-on-your-benchmark">Test LLMs on your benchmark</h2>
 <p>After generation your benchmark, it's time to evaluate LLMs on it. Input the test model's name and path to the saved benchmark, provide document_length and depth you want to test, TAIL will automatically run the evaluation and store visualizations in <code>test_result_save_dir</code>.</p>
-<pre><code>tail-cli.eval --QA_save_path &quot;/data/QA.json&quot; --test_model_name &quot;gpt-4o&quot; --test_depth_list 25 75 --test_doc_length 8000 32000 --test_result_save_dir /data/result/
+<pre><code>tail-cli.eval --QA_save_path &quot;/data/QA.json&quot; --test_model_name &quot;gpt-4o&quot; --test_depth_list 25 75 --test_doc_length 8000 32000 --test_result_save_dir &quot;/data/result/&quot;
 </code></pre></div>
             </div>
         </div>
