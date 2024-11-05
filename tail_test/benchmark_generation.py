@@ -167,7 +167,7 @@ def gen_benchmark(args,client):
             all_paragraphs_chars.append(context)
         # print(len(all_paragraphs_tokens))
         total_tokens = sum([len(sublist) for sublist in all_paragraphs_tokens])
-        print("[TAIL] Start emebedding source document...")
+        print("[TAIL] Start embedding source document...")
         paragraph_embeds = [client.embeddings.create(input=[p], model="text-embedding-3-large").data[0].embedding for p in all_paragraphs_chars]
         print("[TAIL] Embedding finished!")
         print("[TAIL] Start generating QA...")
