@@ -4,6 +4,6 @@ seaborn
 tiktoken
 nltk
 numpy
-# vllm
+vllm
 matplotlib
 numpy

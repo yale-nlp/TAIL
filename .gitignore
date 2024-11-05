@@ -4,6 +4,6 @@ site
 .DS_Store
 dist
 build
-result
+results2
 data
 misc

@@ -32,7 +32,7 @@ Automatic, Easy and Realistic tool for LLM Evaluation
         <h3 class="card-title">Realistic and natural</h3>
         <p class="card-text">
             Unlike the 
-            <a href="https://github.com/gkamradt/LLMTest_NeedleInAHaystack">needle-in-a-haystack</a> test, TAIL generate questions based on infomations from your own document, instead of inserting a piece of new infomation, making the benchmark more realistic and natural.
+            <a href="https://github.com/gkamradt/LLMTest_NeedleInAHaystack">needle-in-a-haystack</a> test, TAIL generate questions based on information from your own document, instead of inserting a piece of new infomation, making the benchmark more realistic and natural.
         </p>
       </div>
     </div>

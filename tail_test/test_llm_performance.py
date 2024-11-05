@@ -95,21 +95,7 @@ def test_llm_performance(args,client):
         point_time = time.time()
         print(f"{num}/{len(matching_entries)},lengths:{token_lengths},depth:{depth},Answer: {acc*100}% "+f"Time: {round((point_time - start_time)/60, 1)} min Used")
     
-        # if (num+1) % 10 == 0:
-        #     model_name = args.test_model_name.split('/')[-1]
-            
-        #     print(termcolor.colored(f"Num saved: {len(result)}", 'green'))
-        #     with open(args.test_result_save_dir + f"result_{model_name}.json", 'w') as json_file:  
-        #         json.dump(result, json_file)  
-        #     visualize(args)
-        
-        
-    
-    # if os.path.exists(args.test_result_save_dir + f"result_{model_name}.json"):
-    #     with open(args.test_result_save_dir + f"result_{model_name}.json", 'r') as json_file:
-    #         data = json.load(json_file)
-    #     result = data + result
-    print(f"[TAIL] Sucessfully finished testing {model_name} on {args.QA_save_path}.")
     with open(os.path.join(args.test_result_save_dir, f"result_{model_name}.json"), 'w') as json_file:  
         json.dump(result, json_file)  
 
+    print(f"[TAIL] Sucessfully finished testing {model_name} on {args.QA_save_path}.")

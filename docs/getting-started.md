@@ -35,5 +35,5 @@ tail-cli.build --raw_document_path "/data/raw.json" --QA_save_path "/data/QA.jso
 After generation your benchmark, it's time to evaluate LLMs on it. Input the test model's name and path to the saved benchmark, provide document_length and depth you want to test, TAIL will automatically run the evaluation and store visualizations in `test_result_save_dir`.
 
 ```
-tail-cli.eval --QA_save_path "/data/QA.json" --test_model_name "gpt-4o" --test_depth_list 25 75 --test_doc_length 8000 32000 --test_result_save_dir /data/result/
+tail-cli.eval --QA_save_path "/data/QA.json" --test_model_name "gpt-4o" --test_depth_list 25 75 --test_doc_length 8000 32000 --test_result_save_dir "/data/result/"
 ```
