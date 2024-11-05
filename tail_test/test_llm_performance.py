@@ -50,10 +50,7 @@ def test_llm_performance(args,client):
     
     result = []
     
-    is_api_based = True
-    if args.test_model_name not in ["gpt-4o","gemini-1.5-flash","gemini-1.5-pro","glm-4-flash"]:
-        is_api_based = False
-
+    if args.use_api == False:
         tokenizer = AutoTokenizer.from_pretrained(args.test_model_name, trust_remote_code=True)
     
         model = LLM(
@@ -87,7 +84,7 @@ def test_llm_performance(args,client):
         ground_truth = item["QA"]["answer"]
         messages = [{"role": "user", "content": "I will give you a multiple choice question and a corresponding document. Please think step by step to answer and provide your chain of thoughts." + f"Questions: {question} Options: {options_str}"+"Please answer the above question refer to this document only: " + document}] 
 
-        if is_api_based:
+        if args.use_api:
             acc,answer,extract_answer = api_answer(client,ground_truth,messages,args,question,options_str)
         else:
             acc,answer,extract_answer = vllm_complete(ground_truth,model,tokenizer,messages,question,options_str)
