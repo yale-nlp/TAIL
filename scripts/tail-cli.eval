@@ -8,14 +8,14 @@ from tail_test.visualize import visualize
 
 if __name__ == '__main__':
     usage_text = """\
-tail-cli.eval [--QA_save_path <path>] [--test_model_name <name>] [--use_api <bool>]
+tail-cli.eval [--QA_save_path <path>] [--test_model_name <name>] [--use_api ]
                       [--test_depth_list <value>] [--test_doc_length <value>] 
                       [--test_result_save_dir <path>]
 
 Options:
   --QA_save_path <path>          Path to the saved QA dataset.
   --test_model_name <name>       Test model name (default: gpt-4o).
-  --use_api <bool>               Whether to use the OpenAI API or run locally with vllm.
+  --use_api                      Whether to use the OpenAI API or run locally with vllm.
   --test_depth_list <value>      Depths you want to test. Multiple values can be provided (default: 30 70).
   --test_doc_length <value>      Token lengths you want to test. Multiple values can be provided (default: 8000).
   --test_result_save_dir <path>  Path to save the test results and visualizations.
@@ -28,7 +28,7 @@ Options:
 
     parser.add_argument('--QA_save_path', type=str, default = "/data/QA.json", help='path to save the QA dataset')
     parser.add_argument('--test_model_name', type=str, default="gpt-4o", help='test model name')
-    parser.add_argument('--use_api', type=bool, default=True, help='whether to use the OpenAI API or run locally with vllm')
+    parser.add_argument('--use_api', action="store_true", help='whether to use the OpenAI API or run locally with vllm')
     parser.add_argument('--test_depth_list', type=int, nargs='+', default=[30,70], help='what depths you want to test')
     parser.add_argument('--test_doc_length', type=int, nargs='+', default=[8000], help='what token lengths you want to test')
     parser.add_argument('--test_result_save_dir', type=str, help='path to save the test results and visualizations')

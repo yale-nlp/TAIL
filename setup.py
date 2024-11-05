@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 PACKAGE_NAME = "tail_test"
 # version_meta = runpy.run_path("./version.py")
 # VERSION = version_meta["__version__"]
-VERSION = "0.1.1"
+VERSION = "0.1.2"
 
 with open("PYPI_README.md", "r") as fh:
     long_description = fh.read()
