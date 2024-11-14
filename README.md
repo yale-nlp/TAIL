@@ -8,7 +8,7 @@ Automatic, Easy and Realistic tool for LLM Evaluation
 </p>
 
 <p align="center">
-| <a href="https://yale-nlp.github.io/TAIL/"><b>Documentation</b></a> | <a href="https://arxiv.org/abs/2309.06180"><b>Paper</b></a> | 
+| <a href="https://yale-nlp.github.io/TAIL/"><b>Documentation</b></a> | <a href="https://aclanthology.org/2024.emnlp-demo.21/"><b>Paper</b></a> | 
 </p>
 
 <p align="center">
